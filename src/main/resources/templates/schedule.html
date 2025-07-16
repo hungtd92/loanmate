@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        body { font-family: 'Roboto', sans-serif; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 5px; text-align: right; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+<h2>Lịch thanh toán</h2>
+<p>Số tiền vay: <span th:text="${#numbers.formatDecimal(amount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></span></p>
+<p>Kỳ hạn: <span th:text="${termMonths} + ' tháng'"></span></p>
+<p>Lãi suất: <span th:text="${interestRate} + ' %'"></span></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>Tháng</th>
+        <th>Gốc</th>
+        <th>Lãi</th>
+        <th>Tổng</th>
+        <th>Ngày thanh toán</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${payments}">
+        <td th:text="${p.monthIndex}"></td>
+        <td th:text="${#numbers.formatDecimal(p.principal, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${#numbers.formatDecimal(p.interest, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${#numbers.formatDecimal(p.totalPayment, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${#temporals.format(p.paymentDate, 'dd/MM/yyyy')}"></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td><b>Tổng</b></td>
+        <td th:text="${#numbers.formatDecimal(totalPrincipal, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${#numbers.formatDecimal(totalInterest, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')} + ' ₫'"></td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table>
+</body>
+</html>
